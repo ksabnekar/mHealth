@@ -1,0 +1,64 @@
+{% extends 'resources/base.html' %}
+{% load static %}
+{% block content %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/jquery-locationpicker/0.1.12/locationpicker.jquery.min.js'></script>
+	      <script type="text/javascript" src='https://maps.google.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyCUXQFc4_ir3FrFAGqlST_VfVaKAZznF48'></script>
+
+        <style>
+            #mapid { height: 450px; }
+        </style>
+
+    <h1>Nearby Resources</h1>
+    {% if resources %}
+    <ul>
+    {% for resource in resources %}
+        <li>
+        {{ resource.resource_name }}: {{resource.distance}}
+        </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div id="mapid"></div>
+
+    <script>
+        
+        var locations = [];
+        var listLocations = {{ resources2|safe }};
+        var latitude = {{ latitude|safe }};
+        var longitude = {{ longitude|safe }};
+        locations.push([ "Your location", latitude, longitude, 0]);
+        for(var i = 0; i < listLocations.length; i++) {
+            if(listLocations[i].latitude > 0) {
+                locations.push([listLocations[i].location + "(" + listLocations[i].resource_name + ")", listLocations[i].latitude, listLocations[i].longitude, listLocations[i].distance]);
+            }
+        }
+        
+
+    var map = new google.maps.Map(document.getElementById('mapid'), {
+      zoom: 10,
+      center: new google.maps.LatLng(latitude, longitude),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+
+    </script>
+{% endblock %}

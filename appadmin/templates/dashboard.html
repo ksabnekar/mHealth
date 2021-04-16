@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+{% block content %}
+<body>
+<div class="main-page">
+
+	{% include "left_menu.html" %}  
+
+	<!-- start content area here -->
+		<div class="content_area">
+
+        <h3>Welcome to mhealth</h3>
+						
+		{% include "footer.html" %}
+
+		</div>
+	<!-- end content area here -->
+	
+
+{% endblock %}
+</body>
+<script>
+    $(document).ready(function(){
+		$('#idDashboardLi').addClass('active');
+	}); 
+</script>
+</html>

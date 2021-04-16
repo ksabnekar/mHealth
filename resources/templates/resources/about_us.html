@@ -1,0 +1,63 @@
+{% extends 'resources/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="banner_sec">
+    <img src="{% static 'index.jpg' %}" alt=""
+    width="1200" height="400" />
+    <div class="heading-main">
+        <h1>About Us</h1>
+    </div>
+</div>
+<div class="about_sec">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center">This website is proudly brought to you by the students and faculty of the University of Nebraska’s
+                    multidisciplinary, multi-institutional collaboration effort. </h1>
+
+                <p class="text-center">What began as an effort to bring together the minds and experiences of various
+                    academic disciplines
+                    from the University of Nebraska’s multiple institutions has blossomed into this community resource
+                    guide. </p>
+
+                <p>While health care providers and clinical staff provide necessary medical and health services for
+                    their patients, information on other community resources can be difficult to come by. So, when we
+                    started this project, it was our goal to create an app for health care providers and clinical staff
+                    that they could turn to if and when a patient presented a problem outside of the provider’s realm of
+                    expertise. We developed a prototype and launched the app at one of the University of Nebraska
+                    Medical Center’s student run free clinics. With the success of our prototype, we were ready to begin
+                    a larger effort to bring knowledge of community resources to all health care providers and clinical
+                    workers within the Omaha metro. Then, COVID-19 spread across the globe and prevented us from
+                    visiting other clinics. </p>
+
+                <p>As the novel coronavirus spread into Eastern Nebraska, leaving many members of our community with
+                    financial and medical hardships, we knew that we had to do something to help. That is when we
+                    decided that we can continue our work, and provide much needed information on community resources
+                    not just among medical personnel, but to the public as well.</p>
+
+                <p>This website has become our contribution to our community during this difficult time. If you or
+                    anyone you know needs free or low-cost services, please visit our Resources page where you can find
+                    the help you need. </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="help_sec">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10">
+                <!-- <h1><strong>&nbsp;</strong><strong></strong></h1> -->
+                <p id="h.p_Tfha55XmbM4A" class="CDt4Ke zfr3Q" dir="ltr">The University of Nebraska-Omaha is seeking individuals to take part in a short (5-10 minute) survey on their experience with mobile health applications. The survey is available in both English and Espanol.</p>
+                <a href="{% url 'feedback' %}"><button class="button">Click to fill out the Health Resources Survey</button></a>
+
+                <h4 claass="color-text">A Special Thank You</h4>
+                <p class="text-center">To the students and instructors of the Grace Abbott School of Social Work for their work and
+                    contribution on the WIC Douglas and Sarpy County Resource Guide, which guided our efforts in
+                    creating this site. </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

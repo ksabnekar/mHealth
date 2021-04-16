@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+	{% block content %}
+    <body ng-app="mainApp" ng-controller="AddResourceController">
+    <div class="main-page">
+
+	{% include "left_menu.html" %}
+
+    <!-- start content area here -->
+		<div class="content_area">			
+			<div class="tables_area">
+				<h2>Add New Resource</h2>
+				<div class="white_box">
+					<div class="add_formarea">
+					<form name="loginForm">
+						<div class="row">
+							<aside class="col-sm-10">
+								<div class="form-group">
+									<label class="text-uppercase">Resource Name</label>
+									<input type="text" value="" placeholder="Enter Resource Name" class="form-control" ng-model="resource_name" required/>
+								</div>
+							</aside>
+						</div>
+                        <div class="row">
+							<aside class="col-sm-10">
+								<div class="form-group">
+									<label class="text-uppercase">Eligibility</label>
+									<input type="text" value="" placeholder="Enter Eligibility" class="form-control" ng-model="eligibility" required/>
+								</div>
+							</aside>
+						</div>
+                        <div class="row">
+							<aside class="col-sm-10">
+								<div class="form-group">
+									<label class="text-uppercase">Office Hours</label>
+									<input type="text" value="" placeholder="Enter Office Hours" class="form-control" ng-model="office_hours" required/>
+								</div>
+							</aside>
+						</div>
+                        <div class="row">
+							<aside class="col-sm-10">
+								<div class="form-group">
+									<label class="text-uppercase">Phone</label>
+									<input type="text" value="" placeholder="Enter Phone" class="form-control" ng-model="phone" required/>
+								</div>
+							</aside>
+						</div>
+                        <div class="row">
+							<aside class="col-sm-10">
+								<div class="form-group">
+									<label class="text-uppercase">Website Link</label>
+									<input type="text" value="" placeholder="Enter website link" class="form-control" ng-model="website_link" required/>
+								</div>
+							</aside>
+						</div>
+						<div class="row">
+							<aside class="col-sm-10">
+								<div class="form-group">
+									<label class="text-uppercase">Location</label>
+									
+                                    <input type="text" value="" placeholder="Enter Source" class="form-control" id="location" required/>
+							        <input type="hidden" id="latitude"/>
+							        <input type="hidden" id="longitude"/>
+                                    <div id="somecomponent" style="height: 200px;"></div>
+                                    
+                                    <!-- <input type="text" value="" placeholder="Enter Source" class="form-control" id="sourceLocationId" required/>	
+									<input type="hidden" id="addSourceLatitude"/>
+									<input type="hidden" id="addSourceLongitude"/>
+									<input type="hidden" id="addSourceCity"/> -->
+									<!-- <p class="add_map text-right"><a href="#">Add by Map</a></p> -->
+								</div>
+							</aside>
+                        </div>
+						<div class="row">
+							<aside class="col-sm-10">
+								<div class="form-group">
+									<label class="text-uppercase">Category</label>
+									<div class="custom_select">
+										<select ng-model="category" required>
+											<option value="">--Select--</option>
+											<option ng-repeat="category in categoriesList" value="{[{category.category_id}]}">{[{category.category_name}]}</option>
+										</select>
+									</div>
+								</div>
+							</aside>
+						</div>
+                        <div class="row">
+							<aside class="col-sm-10">
+								<div class="form-group">
+									<label class="text-uppercase">Resrouce Description</label>
+									<textarea ng-model="resource_description" class="form-control" required></textarea>
+								</div>
+							</aside>
+						</div>			
+						<button type="submit" class="blue_btn yellow_btn big_yellow text-uppercase"  ng-click="addResource()">Submit</button>
+				</form>
+					</div>
+				</div>
+			</div>
+
+			{% include "footer.html" %}
+
+		</div>
+	<!-- end content area here -->
+	
+	<div ng-hide="true">
+		<form action="{% url 'set_session_null_for_app_admin' %}" method="POST" id="post-form">
+			{% csrf_token %}
+			<input type="Submit" value="Submit form" id="setSessionNullForm">
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+     $('#somecomponent').locationpicker({ 
+        location: {
+            latitude: 40.7324319,
+            longitude: -73.82480777777776
+        },
+        inputBinding: {
+            latitudeInput: $('#latitude'),
+            longitudeInput: $('#longitude'),
+            //radiusInput: $('#us3-radius'),
+            locationNameInput: $('#location')
+        },
+        radius: 300,
+        enableAutocomplete: true
+    });
+
+	$(document).ready(function(){
+		$('#idResourcesLi').addClass('active');
+	});
+	
+	
+</script>
+<script>
+
+	var mainApp = angular.module('mainApp', []);
+	mainApp.controller('AddResourceController', function($rootScope, $scope, AddResourceServices) {
+		
+		$scope.token = '{{request.session.token}}';
+		$scope.categoriesList = [];
+		
+		$scope.categoriesList = JSON.parse('{{categories}}'.replace(/&quot;/g,'"').replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f"));
+        
+        $scope.addResource = function(){
+			if ($scope.loginForm.$valid) {
+				AddResourceServices.addResource($scope)
+				.then(function(_data) {
+					alert("Successfully Added");
+					$('#idResourcesTemplate')[0].click();
+				},
+				function(response) {
+					alert(response.data.message);
+					if(response.status == 401){
+						alert("Your session has been expired.");
+						$scope.token = "-1";
+						$("#setSessionNullForm").click();
+					}
+		        });
+			} else {
+	            $scope.loginForm.$submitted = true;
+	        }
+		}
+		
+	});
+	mainApp.service('AddResourceServices', function($http) {
+		
+        
+        
+        
+        
+        
+        
+        
+        
+		
+		this.addResource = function(scope){
+			
+			var data = new FormData();
+			
+			data.append("resource_name", scope.resource_name);
+			data.append("eligibility", scope.eligibility);
+			data.append("resource_description", scope.resource_description);
+			data.append("office_hours", scope.office_hours);
+			data.append("phone", scope.phone);
+			data.append("website_link", scope.website_link);
+			data.append("category", scope.category);
+			data.append("location", $('#location').val());
+            data.append("latitude", $('#latitude').val());
+            data.append("longitude", $('#longitude').val());
+
+            return $http({
+				    method: 'POST',
+				    url: ipAddress+"/add_resource/",
+				    headers: {'Content-Type': undefined, 'Authorization':  scope.token },
+				    data: data,
+				    transformRequest: angular.identity
+	        });
+	    }
+	});
+	mainApp.config(['$httpProvider', function($httpProvider){ 
+	 	$httpProvider.defaults.xsrfCookieName = 'csrftoken'; 
+	 	$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken'; 
+	 }]);
+	mainApp.config(function($interpolateProvider) {
+		  $interpolateProvider.startSymbol('{[{');
+		  $interpolateProvider.endSymbol('}]}');
+		});
+</script>
+
+ <!-- <script>
+   	var sourceLatitude="",sourceLongitude="",sourceCity="";
+    var autocomplete = new google.maps.places.Autocomplete($("#sourceLocationId")[0], {});
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+	
+    	sourceLatitude="";sourceLongitude="";sourceCity="";
+		console.log(autocomplete);
+		var place = autocomplete.getPlace();
+		var array = place.address_components;
+		for(var i = 0; i < array.length; i++){
+			if(array[i].types[0] == "locality"){
+				sourceCity = array[i].long_name;
+			}
+		}
+		if(sourceCity == ""){
+			for(var i = 0; i < array.length; i++){
+				if(array[i].types[0] == "administrative_area_level_1"){
+					sourceCity = array[i].long_name;
+				}
+			}
+		}
+		var location = place.geometry.location;
+		location = JSON.stringify(location);
+		var location1 = JSON.parse(location);
+		sourceLatitude = location1.lat;
+		sourceLongitude = location1.lng;
+		$('#addSourceLatitude').val(sourceLatitude);
+		$('#addSourceLongitude').val(sourceLongitude);
+		$('#addSourceCity').val(sourceCity);
+	});
+    
+</script> -->
+
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+	{% block content %}
+<body ng-app="mainApp" ng-controller="LoginController">
+
+	<div class="container">
+		<div class="login_form_outer">
+			{{message}}
+			<form name="loginForm">
+			<div class="login_form">
+				<h2>Sign In</h2>
+				<div class="form-group">
+					<label>Username or Email</label>
+					<input type="text" value="" placeholder="" ng-model="username" id="username2" name="username2" class="form-control" required/>
+				</div>
+				<div class="form-group">
+					<label>Password</label>
+					<input type="password" value="" placeholder="" ng-model="password" id="password2" name="password2" class="form-control"  required/>
+				</div>
+				<a href="" class="blue_btn" ng-click="loginUser()">Sign In</a>
+			</div>
+			</form>
+		</div>
+	</div>
+
+	<form ng-hide="true" action="{% url 'appadmindashboard' %}" method="POST" id="post-form">
+		{% csrf_token %}
+		<input type="text" id="token" name="token">
+		<input type="Submit" value="Submit form" id="openDashboardForm">
+	</form>
+
+	
+
+
+<script src="{% static 'appadmin/js/jquery.js'%}" type="text/javascript"></script>
+<script src="{% static 'appadmin/js/bootstrap.js'%}" type="text/javascript"></script>
+<script>
+ 
+ 
+ var mainApp = angular.module('mainApp', []);
+ mainApp.controller('LoginController', function($rootScope, $scope, LoginServices) {
+	 $scope.loginUser = function(){
+		if ($scope.loginForm.$valid ) {
+			LoginServices.loginUser($scope)
+			.then(function(_data) {
+				$("#token").val(_data.data.token);
+				$("#openDashboardForm").click();
+			},
+			function(response) {
+				alert(response.data.message);
+			});
+		} else {
+			alert("kindly enter username and password fields values first.");
+        	$scope.loginForm.$submitted = true;
+        }
+ 	}
+ });
+ mainApp.service('LoginServices', function($http) {
+ 	this.loginUser = function(scope) {
+ 		var formData = {
+         		"username" : scope.username,
+         		"password" : scope.password
+         }
+ 		return $http.post(ipAddress+"/login_admin_user/", formData);
+ 	}
+ });
+ </script>
+
+</body>
+{% endblock %}
+
+</html>

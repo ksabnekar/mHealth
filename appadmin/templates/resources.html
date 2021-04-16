@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+	{% block content %}
+
+<body ng-app="mainApp" ng-controller="ResourcesController">
+<div class="main-page">
+
+	{% include "left_menu.html" %}
+
+	<!-- start content area here -->
+		<div class="content_area">
+			
+			<div class="tables_area">
+				<h2 class="pull-left">Resources</h2>
+				<a href="{% url 'appadminaddresource' %}" class="blue_btn yellow_btn pull-right text-uppercase">Add New</a>
+				
+				<a href="" id="idAddNewResource" ng-hide="true"></a>
+				
+				<div class="clear"></div>
+				<div class="white_box">
+					<div class="table-responsive">
+						<table width="100%" cellspacing="0" cellpadding="0">
+							<thead>
+								<tr>
+                                    <th>Id</th>
+                                    <th>Resource Name</th>
+                                    <th>Eligibility</th>
+                                    <th>Resource Description</th>
+                                    <th>Office Hours</th>
+                                    <th>Phone</th>
+                                    <th>Location</th>
+                                    <th>Website Link</th>
+                                    <th>category</th>
+									<th style="min-width:160px;">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr dir-paginate="resource in resourcesList|orderBy:sortKey:reverse|filter:search|itemsPerPage:15">
+									<td>{[{resource.resource_id}]}</td>
+									<td>{[{resource.resource_name}]}</td>
+									<td>{[{resource.eligibility}]}</td>
+									<td>{[{resource.resource_description}]}</td>
+									<td>{[{resource.office_hours}]}</td>
+									<td>{[{resource.phone}]}</td>
+									<td>{[{resource.location}]}</td>
+									<td>{[{resource.website_link}]}</td>
+									<td><p ng-repeat="category in categoriesList" ng-if="category.category_id == resource.category">{[{category.category_name}]}</p></td>
+									<td>
+										<a href="" ng-click="viewResource(resource)" class="action_btn"><i class="fa fa-eye" aria-hidden="true"></i></a>
+										<a href="" ng-click="editResource(resource)" class="action_btn"><i class="fa fa-edit" aria-hidden="true"></i></a>
+										<a href="" ng-click="deleteResource(resource)" class="action_btn"><i class="fa fa-trash" aria-hidden="true"></i></a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<dir-pagination-controls max-size="15" direction-links="true"
+									boundary-links="true"> </dir-pagination-controls>
+					</div>
+				</div>
+			</div>
+
+			{% include "footer.html" %}
+
+		</div>
+	<!-- end content area here -->
+	
+	<div ng-hide="true">
+		<form ng-hide action="{% url 'view_resource' %}" method="POST" id="post-form">
+			{% csrf_token %}
+			<input type="text" id="viewResourceId" name="viewResourceId">
+			<input type="Submit" value="Submit form" id="openViewResourceForm">
+		</form>
+		
+		<form action="{% url 'edit_resource' %}" method="POST" id="post-form">
+			{% csrf_token %}
+			<input type="text" id="editResourceId" name="editResourceId">
+			<input type="Submit" value="Submit form" id="openEditResourceForm">
+		</form>
+		
+	</div>
+	<div ng-hide="true">
+		<form action="{% url 'set_session_null_for_app_admin' %}" method="POST" id="post-form">
+			{% csrf_token %}
+			<input type="Submit" value="Submit form" id="setSessionNullForm">
+		</form>
+	</div>
+</div>
+
+
+<script>
+var mainApp = angular.module('mainApp', ['angularUtils.directives.dirPagination']);
+mainApp.controller('ResourcesController', function($rootScope, $scope, $filter, ResourcesServices) {
+	
+	var tz = jstz.determine();
+	$scope.timeZone = tz.name();
+	$scope.token = '{{request.session.token}}';
+	$scope.resourcesList = JSON.parse('{{resources}}'.replace(/&quot;/g,'"').replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f"));
+	$scope.categoriesList = JSON.parse('{{categories}}'.replace(/&quot;/g,'"').replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f"));
+	$scope.addNewBusFleet = function(){
+		var conf = confirm("Would you like to add new fleet?");
+		if(conf){
+			$('#idAddNewBusFleet')[0].click();
+		}
+	}
+	
+	$scope.viewResource = function(obj){
+		$('#viewResourceId').val(JSON.stringify(obj));
+		$('#openViewResourceForm').click();
+	}
+	
+	$scope.editResource = function(obj){
+		$('#editResourceId').val(JSON.stringify(obj));
+		$('#openEditResourceForm').click();
+	}
+	
+	$scope.deleteResource = function(obj){
+		ResourcesServices.deleteResource($scope, obj)
+		.then(function(_data) {
+			alert("Resource deleted successfully.");
+			var index = -1;
+			for(var i = 0; i < $scope.resourcesList.length; i++){
+				if($scope.resourcesList[i].resource_id == obj.resource_id){
+					index = i;
+					break;
+				}
+			}
+			if(index != -1){
+				$scope.resourcesList.splice(index, 1);
+			}
+			
+			getResourcesList();
+        },
+		function(response) {
+        	if(response.status == 401){
+				alert("Your session has been expired.");
+				$scope.token = "-1";
+				$("#setSessionNullForm").click();
+			}
+        	alert("Sorry! Something went wrong.");
+        });
+	}
+	
+});
+mainApp.service('ResourcesServices', function($http) {
+	
+	this.deleteResource = function(scope, obj) {
+		var formData = {
+			"resource_id" : obj.resource_id
+		};
+ 		return $http.post(ipAddress+"/delete_resource/", formData, {
+ 	        headers:{ 'Authorization':  scope.token}
+ 	    });
+ 	}
+ 	
+});
+mainApp.config(['$httpProvider', function($httpProvider){ 
+ 	$httpProvider.defaults.xsrfCookieName = 'csrftoken'; 
+ 	$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken'; 
+ }]);
+mainApp.config(function($interpolateProvider) {
+	  $interpolateProvider.startSymbol('{[{');
+	  $interpolateProvider.endSymbol('}]}');
+	});
+mainApp.directive('loading', ['$http', function ($http) {
+    return {
+        restrict: 'A',
+        link: function (scope, elm, attrs) {
+            scope.isLoading = function () {
+                return $http.pendingRequests.length > 0;
+            };
+
+            scope.$watch(scope.isLoading, function (v) {
+                if (v) {
+                    elm.show();
+                } else {
+                    elm.hide();
+                }
+            });
+        }
+    };
+
+}]);
+</script>
+<script type="text/javascript">
+	/* $(document).ready(function(){
+		$('#idBusFleetsLi').addClass('active');
+	}); 
+	
+	$(".datepicker").click(function(){
+		var year = d.getFullYear();
+		var month = d.getMonth();
+		var day = d.getDate();
+		//$( ".datepicker" ).datepicker();
+		$(".datepicker").datepicker({
+			onClose: function( selectedDate ) {
+				angular.element(document.getElementById('idSearchIndex')).scope().getSeatDetails();
+    		},
+			//minDate: new Date(),
+			//maxDate:new Date(year + 1, month, day),
+		});
+	})
+	 */
+	 $(document).ready(function() {
+			
+			$('#idResourcesLi').addClass('active');
+	    	
+			$(".datepicker").datepicker({
+				
+				 onClose:function( selectedDate ) {
+						angular.element(document.getElementById('idSearchIndex')).scope().getSeatDetails();
+	    		 },
+				
+			});
+			
+			$('.timepicker').timepicker();
+			
+			
+		});
+</script>
+{% endblock %}
+</body>
+</html>

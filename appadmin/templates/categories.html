@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+	{% block content %}
+<body ng-app="mainApp" ng-controller="CategoriesController">
+<div class="main-page">
+
+	{% include "left_menu.html" %}
+
+	<!-- start content area here -->
+		<div class="content_area">
+			
+			<div class="tables_area">
+				<h2>Add new category</h2>
+				<form class="top_form" name="accountForm">
+					<div class="row">
+						<aside class="col-sm-4">
+							<div class="form-group">
+							    <input type="text"  class="form-control"  value="" placeholder="Enter Category Name" ng-model="category_name" required/>
+							</div>
+						</aside>
+						<aside class="col-sm-4">
+							<button type="submit" class="blue_btn yellow_btn text-uppercase" ng-click="addUpdateCategory()">{[{btnName}]}</button>
+						</aside>
+					</div>
+				</form>
+				<h2>Categories</h2>
+				<div class="white_box">
+					<div class="table-responsive">
+						<table width="100%" cellspacing="0" cellpadding="0">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Category Name</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr dir-paginate="category in categoriesList|orderBy:sortKey:reverse|filter:search|itemsPerPage:15">
+									<td>{[{category.category_id}]}</td>
+									<td>{[{category.category_name}]}</td>
+									<td>
+										<a href="" ng-click="editCategory(category)" class="action_btn"><i class="fa fa-edit" aria-hidden="true"></i></a>
+										<a href="" ng-click="deleteCategory(category)" class="action_btn"><i class="fa fa-trash" aria-hidden="true"></i></a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<dir-pagination-controls max-size="15" direction-links="true"
+									boundary-links="true"> </dir-pagination-controls>
+					</div>
+				</div>
+			</div>
+
+			{% include "footer.html" %}
+
+</div>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#idCategoriesLi').addClass('active');
+	});
+</script>
+<script>
+	var mainApp = angular.module('mainApp', ['angularUtils.directives.dirPagination']);
+	mainApp.controller('CategoriesController', function($rootScope, $scope, CategoriesServices) {
+		
+		$scope.token = '{{request.session.token}}';
+        $scope.btnName = "Add";
+		$scope.categoriesList = [];
+		if($scope.categoriesList.length == 0){
+			getCategoriesList();
+		}
+		function getCategoriesList(){
+			CategoriesServices.getCategoriesList($scope)
+			.then(function(_data) {
+				$scope.categoriesList = _data.data;
+			},
+			function(response) {
+	        	
+	        });
+		}
+		
+		$scope.addUpdateCategory = function(){
+			
+			
+			if ($scope.accountForm.$valid) {
+				if($scope.btnName === "Add"){
+					
+					var base64 = $scope.newImage;
+					
+					CategoriesServices.addCategory($scope)
+					.then(function(_data) {
+						getCategoriesList();
+						alert("Successfully Added");
+						$scope.id = "";
+						$scope.category_name = "";
+					},
+					function(response) {
+						alert(response.data.message);
+					});
+				}else{
+					CategoriesServices.updateCategory($scope)
+					.then(function(_data) {
+						getCategoriesList();
+						alert("Successfully Updated");
+						$scope.id = "";
+						$scope.category_name = "";
+						$scope.btnName = "Add";
+					},
+					function(response) {
+						alert(response.data.message);
+					});
+				}
+			}else{
+				$scope.accountForm.$submitted = true;
+			}
+		}
+		
+		$scope.editCategory = function(category) {
+			$scope.btnName = "Update";
+			$scope.category_id = category.category_id;
+			$scope.category_name = category.category_name;
+		}
+		
+		$scope.deleteCategory = function(category) {
+			$scope.category_id = category.category_id;
+			CategoriesServices.deleteCategory($scope)
+			.then(function(_data) {
+				getCategoriesList();
+				alert("Successfully Deleted");
+			},
+			function(response) {
+				alert(response.data.message);
+			});
+		}
+		
+	});
+	mainApp.service('CategoriesServices', function($http) {
+		
+		this.getCategoriesList = function(scope) {
+			return $http.get(ipAddress+"/categories_list/", {
+	 	        headers:{ 'Authorization':  scope.token}
+	 	    });
+	 	}
+		
+		this.addCategory = function(scope) {
+			
+			var data = new FormData();
+		  	data.append("category_name", scope.category_name);
+		  	return $http({
+				    method: 'POST',
+				    url: ipAddress+"/add_category/",
+				    headers: {'Content-Type': undefined, 'Authorization':  scope.token },
+				    data: data,
+				    transformRequest: angular.identity
+	        });
+	 	}
+		
+		this.updateCategory = function(scope) {
+			var data = new FormData();
+			data.append("category_id", scope.category_id);
+		  	data.append("category_name", scope.category_name);
+		  	
+		  	return $http({
+				    method: 'POST',
+				    url: ipAddress+"/update_category/",
+				    headers: {'Content-Type': undefined, 'Authorization':  scope.token },
+				    data: data,
+				    transformRequest: angular.identity
+	        });
+	 	}
+		
+		this.deleteCategory = function(scope) {
+			var data = new FormData();
+			data.append("category_id", scope.category_id);
+		  	return $http({
+				    method: 'POST',
+				    url: ipAddress+"/delete_category/",
+				    headers: {'Content-Type': undefined, 'Authorization':  scope.token },
+				    data: data,
+				    transformRequest: angular.identity
+	        });
+	 	}
+		
+	});
+	mainApp.config(['$httpProvider', function($httpProvider){ 
+	 	$httpProvider.defaults.xsrfCookieName = 'csrftoken'; 
+	 	$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken'; 
+	 }]);
+	mainApp.config(function($interpolateProvider) {
+		  $interpolateProvider.startSymbol('{[{');
+		  $interpolateProvider.endSymbol('}]}');
+		});
+</script>
+
+{% endblock %}
+</body>
+</html>

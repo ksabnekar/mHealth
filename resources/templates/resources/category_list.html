@@ -1,0 +1,54 @@
+{% extends 'resources/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="banner_sec">
+    <img src="{% static 'index.jpg' %}" alt=""
+    width="1200" height="400" />
+    <div class="heading-main">
+        <h1>Community Resources</h1>
+    </div>
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="welcome_box">
+                    <div class="title">
+                        <h4 style="text-align:center;">Welcome!</h4>
+                    </div>
+                    <div class="text">
+                        <h4 style="text-align:center;">We all need help sometimes, but knowing where to start can be
+                            tricky.</h4>
+                        <h4 style="text-align:center;">That's why we've put together this list of resources to help you
+                            and your loved ones stay safe and healthy.</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-title">
+                    <h3>Click on a service below to find free or low-cost assistance in Omaha and its surrounding areas
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="categories_sec">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="cat-box">
+                        {% for category in categories %}
+                        <a href="{% url 'resource_list' pk=category.category_id %}">{{ category.category_name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

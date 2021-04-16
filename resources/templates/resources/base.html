@@ -1,0 +1,464 @@
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <title>Resource Guides</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Remove the navbar's default margin-bottom and rounded borders */
+        body {
+            background-color: beige;
+            font-family: 'Bitter', serif !important;
+            font-size: 16px;
+            line-height: 28px;
+        }
+
+        .navbar-nav {
+            float: right;
+        }
+
+        .navbar-inverse .navbar-brand {
+            color: #fff;
+        }
+
+        .navbar-inverse .navbar-nav>li>a {
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        .row.content {
+            height: 450px
+        }
+
+        /* Set gray background color and 100% height */
+        .sidenav {
+            padding-top: 20px;
+            background-color: #f1f1f1;
+            height: 100%;
+        }
+
+        /* Set black background color, white text and some padding */
+        footer {
+            background-color: #f0f8ffd6;
+            text-align: center;
+            padding: 20px 0 10px;
+            border-top: 1px solid #ffffff85;
+        }
+
+        footer p {
+            font-size: 12px;
+        }
+
+        .banner_sec img {
+            width: 100%;
+            max-width: 100%;
+            opacity: .65;
+        }
+
+        .banner_sec {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .banner_sec .heading-main {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .banner_sec .heading-main h1 {
+            text-transform: capitalize;
+            font-size: 66px;
+            position: relative;
+            text-align: center;
+        }
+
+        .banner_sec .heading-main h1:after {
+            content: " ";
+            position: absolute;
+            bottom: -20px;
+            height: 10px;
+            width: 120%;
+            background-color: rgba(96, 125, 139, 1);
+            left: -10%;
+        }
+
+        .help_sec .col-md-8,
+        .help_sec .col-md-10 {
+            text-align: center;
+            margin: auto;
+            float: inherit;
+        }
+
+        .help_sec {
+            margin-bottom: 40px;
+        }
+
+        .mini-haed {
+            margin-bottom: 30px;
+        }
+
+        .help_sec p {
+            font-size: 16px;
+            line-height: 25px;
+        }
+
+        .button {
+            margin-top: 10px;
+            width: 100%;
+            text-align: center;
+            background-color: rgb(92, 120, 135);
+            color: #fff;
+            margin: 10px 0;
+            padding: 6px;
+            transition: .2s all;
+            font-size: 18px;
+            border: 1px solid #fff;
+        }
+
+        .button:hover {
+            box-shadow: 0 0 5px #0000003d;
+            text-decoration: none;
+        }
+
+        .img_sec img {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .img_sec {
+            margin-bottom: 40px;
+        }
+
+        .img_sec p {
+            font-size: 22px;
+            text-align: center;
+        }
+
+        .img_sec p span {
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .welcome_box {
+            background-color: #f0f7fd;
+            padding: 40px 50px;
+            border-radius: 20px;
+            border: 1px solid #fff;
+            box-shadow: 0 0 5px #dddddd42;
+            margin: 30px 0px;
+        }
+
+        .title h4 {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 40px;
+        }
+
+        .text {
+            max-width: 80%;
+            margin: auto;
+        }
+
+        .text h4 {
+            font-size: 16px;
+            line-height: 26px;
+        }
+
+        .resourec-tabs .col-md-12 {
+            padding: 0 15px 35px;
+            border-bottom: 3px solid rgb(96, 125, 139);
+        }
+
+        .resourec-tabs a h2 {
+            margin-bottom: 30px;
+            text-decoration: underline;
+        }
+
+        .resourec-tabs a {
+            color: #000;
+            font-size: 18px;
+            font-weight: 500;
+            text-decoration: underline;
+        }
+
+        .tab {
+            padding: 40px 0;
+        }
+
+        .tab .main-head {
+            font-size: 42px;
+        }
+
+        .sub-box {
+            margin: 40px 0;
+        }
+
+        .tab .name {
+            margin-bottom: 20px;
+            font-size: 34px;
+            text-transform: capitalize;
+        }
+
+        .tab p {
+            font-size: 16px;
+        }
+
+        .tab .location-box {
+            margin: 30px 0;
+        }
+
+        .note {
+            font-size: 14px !important;
+        }
+
+        .location {
+            text-decoration: underline;
+            color: #000;
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .location-box p {
+            line-height: 30px;
+        }
+
+        .about_sec h1 {
+            font-size: 40px;
+            line-height: 60px;
+            margin-bottom: 30px;
+        }
+
+        .about_sec p {
+            margin-bottom: 20px;
+        }
+
+        .help_sec h4 {
+            color: #5c7887;
+            font-size: 22px;
+            margin-top: 35px;
+            margin-bottom: 25px;
+        }
+
+        .panel-title h3 {
+            text-align: center;
+            font-size: 38px;
+            line-height: 55px;
+            margin-bottom: 40px;
+        }
+
+        .categories_sec {
+            margin-bottom: calc(100vh - 604px);
+        }
+
+        .categories_sec .cat-box {
+            display: flex;
+            align-content: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .categories_sec .cat-box a:hover {
+            box-shadow: 0 0 5px #0000003d;
+            text-decoration: none;
+        }
+
+        .categories_sec .cat-box a {
+            flex: 0 33%;
+            text-align: center;
+            background-color: rgb(92, 120, 135);
+            color: #fff;
+            margin: 10px 0;
+            max-width: 350px;
+            padding: 6px;
+            transition: .2s all;
+            font-size: 18px;
+            border: 1px solid #fff;
+        }
+
+        .navbar-nav>li>a {
+            padding-top: 28px;
+            padding-bottom: 28px;
+        }
+
+        .navbar-brand {
+            padding: 19px 15px;
+        }
+
+        .navbar-brand>img {
+            display: inline;
+            width: 100%;
+            max-width: 60px;
+        }
+
+        .form_sec iframe {
+            margin: auto;
+            display: block;
+            padding: 0 0 30px;
+        }
+
+
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+            .navbar-brand {
+                padding: 5px 15px;
+            }
+
+            .banner_sec img {
+                height: 200px;
+                object-fit: fill;
+            }
+
+            .sidenav {
+                height: auto;
+                padding: 15px;
+            }
+
+            .row.content {
+                height: auto;
+            }
+
+            .navbar-nav {
+                float: left;
+            }
+
+            .navbar-nav>li>a {
+                padding-top: 15px;
+                padding-bottom: 15px;
+                padding-left: 15px;
+            }
+
+            .banner_sec .heading-main h1 {
+                font-size: 50px;
+            }
+
+            .img_sec p {
+                font-size: 16px;
+                text-align: center;
+            }
+
+            .welcome_box {
+                padding: 20px 20px;
+                margin: 10px 0px;
+            }
+
+            .panel-title h3 {
+                font-size: 30px;
+                line-height: 40px;
+                margin-bottom: 20px;
+            }
+
+            .about_sec h1 {
+                font-size: 30px;
+                line-height: 45px;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media screen and (max-width: 575px) {
+            .banner_sec .heading-main h1 {
+                font-size: 27px;
+            }
+
+            .banner_sec .heading-main h1::after {
+                bottom: -10px;
+                height: 4px;
+            }
+
+            .text {
+                max-width: 100%;
+            }
+
+            .welcome_box {
+                padding: 20px 10px;
+                margin: 10px 0px;
+            }
+
+            .panel-title h3 {
+                font-size: 20px;
+                line-height: 30px;
+                margin-bottom: 20px;
+            }
+
+            .categories_sec .cat-box a {
+                flex: 0 100%;
+                margin: 5px 0;
+                max-width: 100%;
+                font-size: 16px;
+            }
+
+            .about_sec h1 {
+                font-size: 20px;
+                line-height: 35px;
+            }
+
+            .help_sec .mini-haed {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body id="app-layout" style="background-color: #f1f1f1">
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+
+                <!-- Collapsed Hamburger -->
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="sr-only">Toggle Navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <!-- Branding Image -->
+                <a class="navbar-brand" href="/">
+                    <img src="{% static 'index2.jpg' %}" alt="" /> Resource Guides
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'category_list' %}">Resources</a></li>
+                    <li><a href="{% url 'about_us' %}">About</a></li>
+                    <li><a href="{% url 'feedback' %}">Health Resources Survey</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="content">
+        {% block content %}
+
+
+        {% endblock %}
+    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>© 2020 University of Nebraska Omaha. All Rights Reserved. </p>
+                    <p>To suggest additional resources please contact: Dr. Sajda Qureshi, @squreshi@unomaha.edu</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+{% extends 'resources/base.html' %}
+{% load static %}
+{% block content %}
+<div class="banner_sec">
+    <img src="{% static 'index.jpg' %}" alt="" width="1200" height="400" />
+    <div class="heading-main">
+        <h1>{{category_name}}</h1>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="welcome_box">
+                <div class="title">
+                    <h4 style="text-align:center;">Welcome!</h4>
+                </div>
+                <div class="text">
+                        <h4 style="text-align:center;"><a href="" onclick="hitURL()">FIND RESOURCES NEAR ME!</a></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="resourec-tabs">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Resources Guide</h2>
+                <p><a href="#res1"> Resource One</a></p>
+                <p><a href="#res2"> Resource Two</a></p>
+                <p><a href="#res3"> resource three</a></p>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="tabs_sec">
+    <div class="container">
+        <div class="tab" id="res1">
+            <div class="row">
+                <div class="col-md-12">
+                    {% for resource in resources %}
+                    <div class="sub-box">
+                        <h3 class="name">{{ resource.resource_name }}</h3>
+                        <p class="services"><strong>Eligibility/Requirements:</strong> {{ resource.eligibility }}</p>
+                        <p class="Payment "><strong>Description:</strong> {{ resource.resource_description }}</p>
+                        <p class="Hours"><strong>Office hours:</strong> {{ resource.office_hours }}</p>
+
+                        <div class="location-box">
+                            <p> <strong>Address:</strong> {{ resource.location }}</p>
+                            <p><strong>Phone:</strong> {{ resource.phone }}</p>
+                            <p><strong>Website Link:</strong> {{ resource.website_link }}</p>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                   
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        var latitude = null;
+        var longitude = null;
+        var category_id = {{category_id}};
+        
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else { 
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        getLocation();
+        function showPosition(position) {
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+        }
+        function hitURL() {
+            event.preventDefault();
+            if(latitude != null) {
+                var url = "{% url 'resource_list_by_location' category_id=12 lat=123 lon=234 %}".replace(/12/, category_id.toString()).replace(/123/, latitude.toString()).replace(/234/, longitude.toString());
+                document.location.href = url;
+            } else {
+                alert("Kindly do refresh the page and grant your location access to use this feature.");
+            }
+        }
+    </script>
+</div>
+{% endblock %}

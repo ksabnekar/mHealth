@@ -1,0 +1,129 @@
+{% load static %}
+
+<style>
+.dropdown-menu svg {
+	height: 14px;
+	width: 25px;
+}
+.left_sidebar svg {
+	height: 16px;
+	width: 16px;
+	vertical-align: middle;
+	margin-right: 14px;
+
+}
+.new_user {
+	height: 34px;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+.dropdown-submenu {
+	position: relative;
+}
+.notification_popup {
+    color: #fff;
+    padding: 0 10px;
+     min-width: 310px;
+}
+.notification_popup p{font-size: 12px; color: #eee;}
+
+.dropdown-submenu .dropdown-menu {
+	top: 50px;
+	left: 0;
+	margin-top: -1px;
+}
+.dropdown-menu.dropdown_box {
+    height: 350px;
+    overflow-y: scroll;
+}
+.dropdown-menu li a {
+	color: 000;
+	font-size: 16px;
+}
+
+ul.dropdown-menu {
+	width: 100%;
+}
+
+ul.dropdown-menu li a {
+	color: #000;
+	font-size: 16px;
+}
+
+.left_sidebar ul .dropdown:hover ul li a {
+	color: #000;
+}
+
+.dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus {
+	color: #f1a732 !important;
+}
+
+.right_loggedarea .dropdown-menu a {
+	font-size: 14px;
+}
+</style>
+<!-- start header here -->
+<header class="header">
+	<div class="dashboard_logoarea text-center">
+		<a href="#" class="menu_bar"><i class="fa fa-bars"
+			aria-hidden="true"></i></a> <a href="#"><img
+			src="" alt="" />M-Health</a>
+	</div>
+	<div class="right_loggedarea">
+		<ul>
+			<li class="dropdown">
+			<a href="#" class="dropdown-toggle" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><svg id="图层_1" class="new_user" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><defs><style>.cls-2{fill:#b5bbcb;}</style></defs><title>icon-my account</title><path class="cls-2" d="M523.79,107l-2-.34a12,12,0,0,1,6.78-8.83l0.84,1.82A10,10,0,0,0,523.79,107Z" transform="translate(-515.64 -75.7)"/><path class="cls-2" d="M543.48,107a9.87,9.87,0,0,0-2.77-5.34,10.07,10.07,0,0,0-2.87-2l0.84-1.81a12.05,12.05,0,0,1,3.44,2.41,11.86,11.86,0,0,1,3.33,6.42Z" transform="translate(-515.64 -75.7)"/><path class="cls-2" d="M533.64,111.7a18,18,0,1,1,18-18A18,18,0,0,1,533.64,111.7Zm0-34a16,16,0,1,0,16,16A16,16,0,0,0,533.64,77.7Z" transform="translate(-515.64 -75.7)"/><path class="cls-2" d="M533.64,101.7c-4.41,0-8-4-8-9s3.59-9,8-9,8,4,8,9S538,101.7,533.64,101.7Zm0-16c-3.31,0-6,3.14-6,7s2.69,7,6,7,6-3.14,6-7S536.95,85.7,533.64,85.7Z" transform="translate(-515.64 -75.7)"/></svg>My Account
+						<i class="fa fa-sort-desc" aria-hidden="true"></i>
+					</a>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					<a id="idLogoutAnchor" class="dropdown-item" href="{% url 'login' %}"><svg id="图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.08 32.04"><defs><style>.cls-1{fill:#fff;}</style></defs><title>icon-logout</title><path class="cls-1" d="M805.39,109.64A15,15,0,0,1,797.72,83a1,1,0,0,1,1.38.18h0a0.93,0.93,0,0,1-.17,1.25,13.16,13.16,0,1,0,16.41,0,1,1,0,0,1-.21-1.29h0a1,1,0,0,1,1.38-.19A15,15,0,0,1,805.39,109.64Z" transform="translate(-792.08 -77.7)"/><rect class="cls-1" x="14.1" width="1.88" height="16.84" rx="0.94" ry="0.94"/></svg>Logout</a>
+				</div>
+			</li>
+		</ul>
+	</div>
+</header>
+<!-- end header here -->
+
+<!-- start left sidebar here -->
+<div class="left_sidebar">
+	<ul>
+
+
+		<li id="idDashboardLi"><a id="idDashboardTemplate" href="{% url 'appadmindashboard' %}">
+			<svg id="图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.45 29.48"><defs><style>.cls-1{fill:#fff;}</style></defs><title>icon-dashboard</title><path class="cls-1" d="M532.62,200.56a15.73,15.73,0,0,1,7.87,29.35,1,1,0,0,1-1.08-.07,1,1,0,0,1-.22-0.22v0l-0.07-.07,0,0h0l-2-3.39a1,1,0,0,1,.36-1.35,1,1,0,0,1,.49-0.13,1,1,0,0,1,.86.49l1.3,2.24,0.19,0.34,0.32-.23a13.77,13.77,0,0,0,5.64-9.77l0-.39h-3a1,1,0,0,1-.7-1.69,1,1,0,0,1,.7-0.29h3l0-.39a13.76,13.76,0,0,0-5.66-9.77l-0.32-.23-0.19.34-1.3,2.25a1,1,0,0,1-.86.49,1,1,0,0,1-.49-0.13,1,1,0,0,1-.36-1.35l1.3-2.25,0.19-.34-0.35-.16a13.61,13.61,0,0,0-11.29,0l-0.35.16,0.19,0.34,1.3,2.25a1,1,0,0,1-1.71,1l-1.3-2.25-0.19-.34-0.32.23a13.75,13.75,0,0,0-5.66,9.77l0,0.39h3a1,1,0,0,1,0,2h-3l0,0.39a13.79,13.79,0,0,0,5.63,9.79l0.32,0.23,0.19-.34,6.67-11.55a1,1,0,1,1,1.71,1l-7.37,12.77a1,1,0,0,1-.6.46,1,1,0,0,1-.25,0,1,1,0,0,1-.49-0.13,15.73,15.73,0,0,1,7.87-29.35" transform="translate(-516.89 -200.56)"/></svg><span>Dashboard</span></a>
+		</li>
+		<li id="idCategoriesLi"><a id="idCategoriesTemplate" href="{% url 'appadmincategories' %}">
+			<svg id="图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.41 30.41"><defs><style>.cls-1{fill:#fff;}</style></defs><title>icon-quick sale</title><path class="cls-1" d="M602.64,200.1a15.2,15.2,0,1,0,15.2,15.2A15.22,15.22,0,0,0,602.64,200.1Zm0,28.62a13.42,13.42,0,1,1,13.42-13.42A13.43,13.43,0,0,1,602.64,228.72Z" transform="translate(-587.43 -200.1)"/><path class="cls-1" d="M601.54,206.71a0.89,0.89,0,0,0-.89.89v8.81a0.88,0.88,0,0,0,.26.63,0.89,0.89,0,0,0,.63.26h6.61a0.89,0.89,0,1,0,0-1.78h-5.72V207.6A0.89,0.89,0,0,0,601.54,206.71Z" transform="translate(-587.43 -200.1)"/></svg><span>Categories</span></a>
+		</li>
+		<li id="idResourcesLi"><a id="idResourcesTemplate" href="{% url 'appadminresources' %}">
+			<svg id="图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.41 30.41"><defs><style>.cls-1{fill:#fff;}</style></defs><title>icon-quick sale</title><path class="cls-1" d="M602.64,200.1a15.2,15.2,0,1,0,15.2,15.2A15.22,15.22,0,0,0,602.64,200.1Zm0,28.62a13.42,13.42,0,1,1,13.42-13.42A13.43,13.43,0,0,1,602.64,228.72Z" transform="translate(-587.43 -200.1)"/><path class="cls-1" d="M601.54,206.71a0.89,0.89,0,0,0-.89.89v8.81a0.88,0.88,0,0,0,.26.63,0.89,0.89,0,0,0,.63.26h6.61a0.89,0.89,0,1,0,0-1.78h-5.72V207.6A0.89,0.89,0,0,0,601.54,206.71Z" transform="translate(-587.43 -200.1)"/></svg><span>Resources</span></a>
+		</li>
+	</ul>
+</div>
+<!-- end left sidebar here -->
+
+<script>
+    
+	function scrollDown() {
+		$(".left_sidebar").animate({
+			scrollTop : $(document).height()
+		}, 1000);
+
+	}
+
+	$(document).ready(function() {
+           
+        
+		$('.dropdown-submenu a.test').on("click", function(e) {
+			$(this).next('ul').toggle();
+			e.stopPropagation();
+			e.preventDefault();
+		});
+		var roleappadmin = '{{request.session.roleappadmin}}';
+		if(roleappadmin == 8){
+			$('#liCompaniesTemplateId').hide();
+			$('#liappadminsId').hide();
+		}
+	});
+	
+</script>
