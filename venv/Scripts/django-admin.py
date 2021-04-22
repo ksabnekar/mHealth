@@ -1,4 +1,4 @@
-#!c:\users\kanak\onedrive\desktop\mhealth\venv\scripts\python.exe
+#!c:\users\pnati\documents\ga work folder\application source files\mhealth\venv\scripts\python.exe
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 

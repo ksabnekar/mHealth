@@ -83,9 +83,9 @@ WSGI_APPLICATION = 'mhealth.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'testdb',
+        'NAME': 'mhealth',
         'USER': 'postgres',
-        'PASSWORD': 'Ch@mpion92)',
+        'PASSWORD': '!QAZ1qaz',
         'HOST': 'localhost',
         'PORT': '5432',
     }
