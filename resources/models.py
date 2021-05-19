@@ -27,3 +27,14 @@ class Resources(models.Model):
 
     def __str__(self):
         return str(self.resource_name)
+
+class UserLocations(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    latitude = models.CharField(max_length=255, default= None)
+    longitude = models.CharField(max_length=500, default=None)
+    street = models.CharField(max_length=1000, default=None)
+    city = models.CharField(max_length=255, default= None)
+    created_at = models.DateTimeField(null=True)
+
+    def __str__(self):
+        return str(self.street)

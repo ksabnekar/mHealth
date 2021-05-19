@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^add_resource/', views.add_resource, name='add_resource'),
     url(r'^update_resource/', views.update_resource, name='update_resource'),
     url(r'^delete_resource/', views.delete_resource, name='delete_resource'),
+    url(r'^add_user_location/', views.add_user_location, name='add_user_location'),
 ]

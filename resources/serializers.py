@@ -16,3 +16,8 @@ class ResourcesSerializer(serializers.ModelSerializer):
         model = Resources
         fields = ('resource_id', 'resource_name', 'eligibility', 'resource_description', 'office_hours', 'phone', 'location', 'latitude', 'longitude', 'website_link', 'category', 'status')
         
+class UserLocationsSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = UserLocations
+        fields = ('id', 'latitude', 'longitude', 'street', 'city', 'created_at')

@@ -92,3 +92,15 @@ def edit_resource(request):
             return render(request, "edit_resource.html", {"resourceId":resourceId, "categories" : json.dumps(c_serializer, cls=DjangoJSONEncoder)})
         else:
             return redirect("set_session_null_for_app_admin")
+
+def user_locations(request):
+    with transaction.atomic():
+        token = request.session['token']
+        token1 = Token.objects.get(key=token)
+        user = token1.user
+        if user is not None:
+            user_locations = UserLocations.objects.all()
+            user_locations_serializer = UserLocationsSerializer(user_locations, many = True).data
+            return render(request, "user_locations.html", {"user_locations" : json.dumps(user_locations_serializer, cls=DjangoJSONEncoder)})
+        else:
+            return redirect("set_session_null_for_app_admin")

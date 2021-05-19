@@ -13,6 +13,7 @@ from rest_framework import status
 from django.db import transaction
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
+import datetime
 
 @api_view(['GET'])
 def categories_list(request):
@@ -305,4 +306,32 @@ def delete_resource(request):
                 return Response({"message" : "Something went wrong", "status" : "0"}, status=status.HTTP_401_UNAUTHORIZED)
     except Exception:
         print(traceback.format_exc())
+        return Response({"message" : "Something went wrong", "status" : "0"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+@csrf_exempt
+def add_user_location(request):
+    try:
+        with transaction.atomic():
+            try:
+                userLocations = UserLocations.objects.get(
+                                            street = request.data['street'],
+                                            city = request.data['city']
+                                                    )
+            except:
+                userLocations = UserLocations.objects.create(
+                                            latitude = request.data['latitude'],
+                                            longitude = request.data['longitude'],
+                                            street = request.data['street'],
+                                            city = request.data['city'],
+                                            created_at = datetime.datetime.now()
+                                                    )
+            if userLocations is not None:
+                return Response({"message" : "Created Successfully", "status" : "1"}, status=status.HTTP_201_CREATED)
+            else:
+                return Response({"message" : "Something went wrong.", "status" : "0"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+    except Exception:
+        print(traceback.format_exc())
+        # transaction.rollback()
         return Response({"message" : "Something went wrong", "status" : "0"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

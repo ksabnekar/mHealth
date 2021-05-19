@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+	{% block content %}
+<body ng-app="mainApp" ng-controller="CategoriesController">
+<div class="main-page">
+
+	{% include "left_menu.html" %}
+
+	<!-- start content area here -->
+		<div class="content_area">
+			
+			<div class="tables_area">
+				<h2>User Locations</h2>
+				<div class="white_box">
+					<div class="table-responsive">
+						<table width="100%" cellspacing="0" cellpadding="0">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Location</th>
+									<th>City</th>
+									<th>Latitude</th>
+									<th>Longitude</th>
+									<th>Created At</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr dir-paginate="userLocation in userLocationsList|orderBy:sortKey:reverse|filter:search|itemsPerPage:15">
+									<td>{[{userLocation.id}]}</td>
+									<td>{[{userLocation.street}]}</td>
+									<td>{[{userLocation.city}]}</td>
+									<td>{[{userLocation.latitude}]}</td>
+									<td>{[{userLocation.longitude}]}</td>
+									<td>{[{userLocation.created_at}]}</td>
+								</tr>
+							</tbody>
+						</table>
+						<dir-pagination-controls max-size="15" direction-links="true"
+									boundary-links="true"> </dir-pagination-controls>
+					</div>
+				</div>
+			</div>
+
+			{% include "footer.html" %}
+
+</div>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#idUserLocationsLi').addClass('active');
+	});
+</script>
+<script>
+	var mainApp = angular.module('mainApp', ['angularUtils.directives.dirPagination']);
+	mainApp.controller('CategoriesController', function($rootScope, $scope, CategoriesServices) {
+		
+		$scope.token = '{{request.session.token}}';
+		$scope.userLocationsList = JSON.parse('{{user_locations}}'.replace(/&quot;/g,'"').replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f"));
+        
+	});
+	mainApp.service('CategoriesServices', function($http) {
+		
+		
+		
+	});
+	mainApp.config(['$httpProvider', function($httpProvider){ 
+	 	$httpProvider.defaults.xsrfCookieName = 'csrftoken'; 
+	 	$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken'; 
+	 }]);
+	mainApp.config(function($interpolateProvider) {
+		  $interpolateProvider.startSymbol('{[{');
+		  $interpolateProvider.endSymbol('}]}');
+		});
+</script>
+
+{% endblock %}
+</body>
+</html>

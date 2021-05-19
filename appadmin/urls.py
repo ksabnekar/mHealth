@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^add_resource/', views.add_resource, name='appadminaddresource'),
     url(r'^view_resource/', views.view_resource, name='view_resource'),
     url(r'^edit_resource/', views.edit_resource, name='edit_resource'),
+    url(r'^user_locations/', views.user_locations, name='user_locations'),
     url(r'^set_session_null_for_app_admin/', views.set_session_null_for_app_admin, name='set_session_null_for_app_admin'),
     
 ]

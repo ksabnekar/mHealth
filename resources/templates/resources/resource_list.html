@@ -48,7 +48,7 @@
                         <div class="location-box">
                             <p> <strong>Address:</strong> {{ resource.location }}</p>
                             <p><strong>Phone:</strong> {{ resource.phone }}</p>
-                            <p><strong>Website Link:</strong> <a href="{{ resource.website_link }}">{{ resource.website_link }}</a></p>
+                            <p><strong>Website Link:</strong> {{ resource.website_link }}</p>
                         </div>
 
                     </div>
@@ -75,6 +75,38 @@
         function showPosition(position) {
             latitude = position.coords.latitude;
             longitude = position.coords.longitude;
+            codeLatLng(latitude, longitude);
+        }
+        function codeLatLng(lat, lng) {
+
+            var latlng = new google.maps.LatLng(lat, lng);
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({'latLng': latlng}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                if (results[1]) {
+                    //formatted address
+                    //find country name
+                        for (var i=0; i<results[0].address_components.length; i++) {
+                        for (var b=0;b<results[0].address_components[i].types.length;b++) {
+
+                        //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
+                            if (results[0].address_components[i].types[b] == "administrative_area_level_1") {
+                                //this is the object you are looking for
+                                city= results[0].address_components[i];
+                                break;
+                            }
+                        }
+                    }
+                    //city data
+                    saveUserLocation(lat, lng, results[0].formatted_address, city.long_name);
+
+                } else {
+                    //alert("No results found");
+                }
+            } else {
+                //alert("Geocoder failed due to: " + status);
+            }
+            });
         }
         function hitURL() {
             event.preventDefault();
@@ -84,6 +116,20 @@
             } else {
                 alert("Kindly do refresh the page and grant your location access to use this feature.");
             }
+        }
+
+        function saveUserLocation(lat, lng, short_name, long_name) {
+            $.ajax(ipAddress+'/add_user_location/', {
+                type: 'POST',  // http method
+                data: { latitude: lat, longitude: lng, street: short_name, city: long_name },  // data to submit
+                success: function (data, status, xhr) {
+                //    alert("success");
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    alert("error");
+                //    alert(errorMessage);
+                }
+            });
         }
     </script>
 </div>
