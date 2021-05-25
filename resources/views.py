@@ -27,12 +27,12 @@ def home(request):
     return render(request, 'resources/home.html')
 
 def category_list(request):
-    category = Category.objects.all
+    category = Category.objects.filter(status = 1)
     return render(request, 'resources/category_list.html',
                  {'categories': category})
 
 def resource_list(request,pk):
-    resource = Resources.objects.filter(category_id=pk)
+    resource = Resources.objects.filter(category_id=pk, status = 1)
     category = Category.objects.get(category_id = pk)
     return render(request, 'resources/resource_list.html',
                  {'resources': resource, 'category_id': pk, 'category_name': category.category_name})
