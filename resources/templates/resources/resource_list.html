@@ -48,7 +48,8 @@
                         <div class="location-box">
                             <p> <strong>Address:</strong> {{ resource.location }}</p>
                             <p><strong>Phone:</strong> {{ resource.phone }}</p>
-                            <p><strong>Website Link:</strong> <a href="url">{{ resource.website_link }}</a></p>
+                            <p><strong>Website Link:</strong> <a href={{ resource.website}}>{{ resource.website_link }}</a></p>
+
                         </div>
 
                     </div>

@@ -55,9 +55,11 @@
         /* Set black background color, white text and some padding */
         footer {
             background-color: #000000;
+            width: 100%;
             text-align: center;
             padding: 20px 0 10px;
             border-top: 1px solid #ffffff85;
+            position: absolute;
         }
 
         footer p {
@@ -267,7 +269,7 @@
         }
 
         .categories_sec {
-            margin-bottom: calc(100vh - 604px);
+            margin-bottom: 25px;
         }
 
         .categories_sec .cat-box {
@@ -315,6 +317,19 @@
             display: block;
             padding: 0 0 30px;
         }
+
+        .responsive {
+            max-width: 25%;
+            height: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .huerotate {
+        filter: hue-rotate(180deg);
+        -webkit-filter: hue-rotate(180deg);
+      }
 
 
         /* On small screens, set height to 'auto' for sidenav and grid */
@@ -444,7 +459,7 @@
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
                     <li><a href="{% url 'home' %}">Home</a></li>
-                    <li><a href="{% url 'category_list' %}">Categories</a></li>
+                    <li><a href="{% url 'category_list' %}">Resources</a></li>
                     <li><a href="{% url 'about_us' %}">About</a></li>
                     <li><a href="{% url 'feedback' %}">Health Resources Survey</a></li>
                 </ul>
@@ -457,13 +472,16 @@
 
         {% endblock %}
     </div>
+
+
+
     <footer>
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <p>© 2021 University of Nebraska Omaha. All Rights Reserved. </p>
                     <p>To suggest additional resources, please contact: <a href="mailto:squreshi@unomaha.edu?subject=Additional Resource">Dr. Sajda Qureshi</a></p>
-                    <p><a href="{% url 'home' %}">Home</a> | <a href="{% url 'category_list' %}">Categories</a> | <a href="{% url 'about_us' %}">About</a> | <a href="{% url 'feedback' %}">Health Resources Survey</a></p>
+                    <p><a href="{% url 'home' %}">Home</a> | <a href="{% url 'category_list' %}">Resources</a> | <a href="{% url 'about_us' %}">About</a> | <a href="{% url 'feedback' %}">Health Resources Survey</a></p>
 
                 </div>
             </div>
