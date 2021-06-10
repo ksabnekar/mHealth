@@ -15,8 +15,8 @@
     <style>
         /* Remove the navbar's default margin-bottom and rounded borders */
         body {
-            background-color: beige;
-            font-family: 'Bitter', serif !important;
+            background-color: #FFFFFF;
+            font-family: 'Arial Narrow', serif !important;
             font-size: 16px;
             line-height: 28px;
         }
@@ -37,7 +37,7 @@
         .navbar {
             margin-bottom: 0;
             border-radius: 0;
-            background-color: #000000;
+            background-color: #0a0a0a;
         }
 
         /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
@@ -48,17 +48,17 @@
         /* Set gray background color and 100% height */
         .sidenav {
             padding-top: 20px;
-            background-color: #f1f1f1;
+            background-color: #FFFFFF;
             height: 100%;
         }
 
         /* Set black background color, white text and some padding */
         footer {
-            background-color: #000000;
+            background-color: #0a0a0a;
             width: 100%;
             text-align: center;
             padding: 20px 0 10px;
-            border-top: 1px solid #ffffff85;
+            border-top: 1px solid #ffffff;
             position: absolute;
         }
 
@@ -68,9 +68,12 @@
         }
 
         .banner_sec img {
-            width: 100%;
-            max-width: 100%;
+            width: 50%;
+            height: 40%;
             opacity: .65;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
         }
 
         .banner_sec {
@@ -79,26 +82,29 @@
         }
 
         .banner_sec .heading-main {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: center;
+            background: rgba(242, 242, 242, 0.95);
+            padding-bottom: 10px;
+
+            padding-top: 2px;
         }
 
         .banner_sec .heading-main h1 {
             text-transform: capitalize;
             font-size: 66px;
+            color: rgb(10, 10, 10);
             position: relative;
             text-align: center;
         }
 
         .banner_sec .heading-main h1:after {
+            /*this is the underline part of the heading*/
             content: " ";
             position: absolute;
             bottom: -20px;
             height: 10px;
             width: 120%;
-            background-color: rgba(96, 125, 139, 1);
+            background-color: rgb(215, 25, 32);
             left: -10%;
         }
 
@@ -126,7 +132,7 @@
             margin-top: 10px;
             width: 100%;
             text-align: center;
-            background-color: rgb(92, 120, 135);
+            background-color: rgb(215, 25, 32);
             color: #fff;
             margin: 10px 0;
             padding: 6px;
@@ -160,7 +166,7 @@
         }
 
         .welcome_box {
-            background-color: #f0f7fd;
+            background-color: #bcbbba;
             padding: 40px 50px;
             border-radius: 20px;
             border: 1px solid #fff;
@@ -186,7 +192,7 @@
 
         .resourec-tabs .col-md-12 {
             padding: 0 15px 35px;
-            border-bottom: 3px solid rgb(96, 125, 139);
+            border-bottom: 3px solid rgb(215, 25, 32);
         }
 
         .resourec-tabs a h2 {
@@ -195,7 +201,7 @@
         }
 
         .resourec-tabs a {
-            color: #000;
+            color: #0a0a0a;
             font-size: 18px;
             font-weight: 500;
             text-decoration: underline;
@@ -233,7 +239,7 @@
 
         .location {
             text-decoration: underline;
-            color: #000;
+            color: #0a0a0a;
             font-weight: 600;
             font-size: 16px;
             margin-bottom: 10px;
@@ -255,7 +261,7 @@
         }
 
         .help_sec h4 {
-            color: #5c7887;
+            color: #d71920;
             font-size: 22px;
             margin-top: 35px;
             margin-bottom: 25px;
@@ -287,7 +293,7 @@
         .categories_sec .cat-box a {
             flex: 0 33%;
             text-align: center;
-            background-color: rgb(92, 120, 135);
+            background-color: #d71920;
             color: #fff;
             margin: 10px 0;
             max-width: 350px;
@@ -320,10 +326,15 @@
 
         .responsive {
             max-width: 25%;
-            height: auto;
+            height: 5px;
             display: block;
             margin-left: auto;
             margin-right: auto;
+        }
+
+        .responsive2 {
+            max-width: 25%;
+            max-height: 25%;
         }
 
         .huerotate {
@@ -392,6 +403,7 @@
         @media screen and (max-width: 575px) {
             .banner_sec .heading-main h1 {
                 font-size: 27px;
+
             }
 
             .banner_sec .heading-main h1::after {
@@ -438,7 +450,7 @@
     var ipAddress = " http://127.0.0.1:8000/apis";
 </script>
 
-<body id="app-layout" style="background-color: #f1f1f1">
+<body id="app-layout" style="background-color: #FFFFFF">
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
