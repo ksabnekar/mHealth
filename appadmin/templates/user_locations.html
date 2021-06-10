@@ -13,6 +13,7 @@
 			
 			<div class="tables_area">
 				<h2>User Locations</h2>
+				<button type="submit" style="float:right" class="blue_btn yellow_btn text-uppercase" ng-click="exportData()">Export</button><br><br><br>
 				<div class="white_box">
 					<div class="table-responsive">
 						<table width="100%" cellspacing="0" cellpadding="0">
@@ -23,6 +24,7 @@
 									<th>City</th>
 									<th>Latitude</th>
 									<th>Longitude</th>
+									<th>IP Address</th>
 									<th>Created At</th>
 								</tr>
 							</thead>
@@ -33,6 +35,7 @@
 									<td>{[{userLocation.city}]}</td>
 									<td>{[{userLocation.latitude}]}</td>
 									<td>{[{userLocation.longitude}]}</td>
+									<td>{[{userLocation.ip_address_of_customer}]}</td>
 									<td>{[{userLocation.created_at}]}</td>
 								</tr>
 							</tbody>
@@ -44,9 +47,13 @@
 			</div>
 
 			{% include "footer.html" %}
-
 </div>
-
+<div ng-hide="true">
+	<form action="{% url 'set_session_null_for_app_admin' %}" method="POST" id="post-form">
+		{% csrf_token %}
+		<input type="Submit" value="Submit form" id="setSessionNullForm">
+	</form>
+</div>
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -55,15 +62,36 @@
 </script>
 <script>
 	var mainApp = angular.module('mainApp', ['angularUtils.directives.dirPagination']);
-	mainApp.controller('CategoriesController', function($rootScope, $scope, CategoriesServices) {
+	mainApp.controller('CategoriesController', function($rootScope, $scope, $window, $location, CategoriesServices) {
 		
 		$scope.token = '{{request.session.token}}';
 		$scope.userLocationsList = JSON.parse('{{user_locations}}'.replace(/&quot;/g,'"').replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f"));
         
+		$scope.exportData = function() {
+			CategoriesServices.exportUserLocations($scope)
+			.then(function(_data) {
+				var base = $location.$$absUrl;
+				base = base.substring(0, base.lastIndexOf('/'))
+				base = base.substring(0, base.lastIndexOf('/'))
+				base = base.substring(0, base.lastIndexOf('/'))
+				$window.open(base + "/" + _data.data.fileUrl);
+			}, function(response) {
+				if (response.status == 401) {
+					alert("Your session has been expired.");
+					$scope.token = "-1";
+					$("#setSessionNullForm").click();
+				}
+			});
+		}
+
 	});
 	mainApp.service('CategoriesServices', function($http) {
 		
-		
+		this.exportUserLocations = function(scope, obj) {
+			return $http.get(ipAddress+"/export_user_locations/", {
+				headers:{ 'Authorization':  scope.token}
+			});
+		}
 		
 	});
 	mainApp.config(['$httpProvider', function($httpProvider){ 

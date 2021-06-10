@@ -18,10 +18,12 @@ from django.urls import path, include
 from apis import urls as api_urls
 from appadmin import urls as admin_urls
 from resources import urls as resources_urls
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
     path('apis/', include(api_urls)),
-    path('admin/', include(admin_urls)),
+    path('popcorn/', include(admin_urls)),
     path('', include(resources_urls))
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

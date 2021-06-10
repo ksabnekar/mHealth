@@ -61,10 +61,17 @@
 
     </div>
     <script>
+
         var latitude = null;
         var longitude = null;
         var category_id = {{category_id}};
         
+        var ipAddressOfCustomer = "";
+        $.getJSON("https://api.ipify.org/?format=json", function(e) {
+            //alert(e.ip);
+            ipAddressOfCustomer = e.ip;
+        });
+
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
@@ -99,7 +106,7 @@
                         }
                     }
                     //city data
-                    saveUserLocation(lat, lng, results[0].formatted_address, city.long_name);
+                    saveUserLocation(lat, lng, results[0].formatted_address, city.long_name, ipAddressOfCustomer);
 
                 } else {
                     //alert("No results found");
@@ -119,10 +126,10 @@
             }
         }
 
-        function saveUserLocation(lat, lng, short_name, long_name) {
+        function saveUserLocation(lat, lng, short_name, long_name, ipAddressOfCustomer) {
             $.ajax(ipAddress+'/add_user_location/', {
                 type: 'POST',  // http method
-                data: { latitude: lat, longitude: lng, street: short_name, city: long_name },  // data to submit
+                data: { latitude: lat, longitude: lng, street: short_name, city: long_name, ip_address_of_customer: ipAddressOfCustomer },  // data to submit
                 success: function (data, status, xhr) {
                 //    alert("success");
                 },
