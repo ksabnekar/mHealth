@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^update_resource/', views.update_resource, name='update_resource'),
     url(r'^delete_resource/', views.delete_resource, name='delete_resource'),
     url(r'^add_user_location/', views.add_user_location, name='add_user_location'),
+    url(r'^export_user_locations/', views.export_user_locations, name='export_user_locations'),
 ]

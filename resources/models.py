@@ -35,6 +35,7 @@ class UserLocations(models.Model):
     street = models.CharField(max_length=1000, default=None)
     city = models.CharField(max_length=255, default= None)
     created_at = models.DateTimeField(null=True)
+    ip_address_of_customer = models.CharField(max_length=255, default= None, null=True)
 
     def __str__(self):
         return str(self.street)

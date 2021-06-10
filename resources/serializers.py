@@ -20,4 +20,4 @@ class UserLocationsSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = UserLocations
-        fields = ('id', 'latitude', 'longitude', 'street', 'city', 'created_at')
+        fields = ('id', 'latitude', 'longitude', 'street', 'city', 'created_at', 'ip_address_of_customer')

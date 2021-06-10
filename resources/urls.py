@@ -11,6 +11,5 @@ urlpatterns = [
     path('resource_list_by_location/<str:category_id>/<str:lat>/<str:lon>/', views.resource_list_by_location, name='resource_list_by_location'),
     path('/feedback', views.feedback, name='feedback'),
     path('/about_us', views.about_us, name='about_us'),
-    
 
 ]

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
+import os
 from resources.models import *
 from resources.serializers import *
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
@@ -14,6 +15,8 @@ from django.db import transaction
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 import datetime
+from mhealth import settings
+import xlsxwriter
 
 @api_view(['GET'])
 def categories_list(request):
@@ -316,7 +319,8 @@ def add_user_location(request):
             try:
                 userLocations = UserLocations.objects.get(
                                             street = request.data['street'],
-                                            city = request.data['city']
+                                            city = request.data['city'],
+                                            ip_address_of_customer = request.data['ip_address_of_customer']
                                                     )
             except:
                 userLocations = UserLocations.objects.create(
@@ -324,7 +328,8 @@ def add_user_location(request):
                                             longitude = request.data['longitude'],
                                             street = request.data['street'],
                                             city = request.data['city'],
-                                            created_at = datetime.datetime.now()
+                                            created_at = datetime.datetime.now(),
+                                            ip_address_of_customer = request.data['ip_address_of_customer']
                                                     )
             if userLocations is not None:
                 return Response({"message" : "Created Successfully", "status" : "1"}, status=status.HTTP_201_CREATED)
@@ -335,3 +340,111 @@ def add_user_location(request):
         print(traceback.format_exc())
         # transaction.rollback()
         return Response({"message" : "Something went wrong", "status" : "0"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+from collections import OrderedDict
+@api_view(['GET'])
+def export_user_locations(request):
+    try:
+        with transaction.atomic():
+
+            API_key = request.META.get('HTTP_AUTHORIZATION')
+            if API_key is not None:
+                try:
+                    token1 = Token.objects.get(key=API_key)
+                    user = token1.user
+                except:
+                    return Response({"message" : "Session Expired!! Please Login Again", "status" : "0"}, status=status.HTTP_401_UNAUTHORIZED)
+
+                if user is not None:
+                    
+                    userLocations = UserLocations.objects.all()
+                    userLocationsSerializer = UserLocationsSerializer(userLocations, many = True).data
+                    newList = []
+                    for r in userLocationsSerializer:    
+                        od1 = OrderedDict([
+                                ('Location', r['street']),
+                                ('City', r['city']),
+                                ('IP Address', r['ip_address_of_customer']),
+                                ('Time', r['created_at']),
+                                ('Latitude', r['latitude']),
+                                ('Longitude', r['longitude']),
+                            ])
+                        
+                        newList.append(od1)
+                        
+                    try:  
+                        pathString = str(settings.MEDIA_ROOT) + "/excel/" + str(user.id)
+                        
+                        for root, dirs, files in os.walk(pathString):
+                            for file in files:
+                                os.remove(os.path.join(pathString, file))
+                        
+                        if not os.path.exists(pathString): os.makedirs(pathString)
+                        
+                        pathUrl = "/user_location_report.xlsx"
+                        
+                        workbook = xlsxwriter.Workbook(str(pathString) + str(pathUrl))
+                        
+                        worksheet = workbook.add_worksheet()
+                        header1 = 'User Location Report'
+                        worksheet.set_header(header1)
+                        
+                        bold = workbook.add_format({'bold': True, 'align':'center'})
+                        headline1 = workbook.add_format({'font_size':11})
+                        headline2 = workbook.add_format({'align':'center'})
+                        statusColorGreen = workbook.add_format({'font_color': 'green', 'align':'center'}) 
+                        statusColorRed = workbook.add_format({'font_color': 'red', 'align':'center'})
+                        
+                        date_format = workbook.add_format({'num_format': 'yyyy-mm-dd', 'align':'center'})
+                        boldHeadline = workbook.add_format({'bold':True, 'align':'center', 'font_size':19})
+                        worksheet.set_row(0, 45)  # Set the height of Row 1 to 20.
+
+                        worksheet.merge_range('A1:F1', 'User Location Report', boldHeadline)
+                        worksheet.set_column('A:A', 16)
+                        worksheet.set_column('B:B', 23)
+
+                        worksheet.set_column('C:D', 17)
+                        worksheet.set_column('E:E', 55)
+                        worksheet.set_column('F:I', 20)
+                        worksheet.set_column('J:J', 66)
+                        worksheet.set_column('K:M', 20)
+                        worksheet.set_column('N:N', 25)
+                        
+                        worksheet.set_column('O:P', 36)
+                        worksheet.set_column('Q:R', 20)
+                        worksheet.set_column('S:S', 40)
+                        worksheet.set_column('T:V', 20)
+
+                        worksheet.set_row(1, 18)  # Set the height of Row 1 to 20.
+                        worksheet.set_row(2, 18)  # Set the height of Row 1 to 20.
+                        
+                        
+                        rw = 4
+                        col = 0
+                        amountColumn = 0
+                        travellerColumn = 0
+                        for r in newList:
+                            rw += 1
+                            col = 0
+                            
+                            for key, value in r.items() :
+                                worksheet.write(4, col, key, bold)
+                                
+                                worksheet.write(rw, col, value, headline2)
+                                col += 1
+                        
+                        workbook.close()
+                        fileUrl = "media/excel/" + str(user.id) + str(pathUrl)
+                        return Response({"message" : "Successfully Done", "status" : "1", "fileUrl":fileUrl}, status=status.HTTP_201_CREATED)
+                    
+                    except Exception as e1:
+                        print(traceback.format_exc())
+                        return Response({"message" : str(e1), "status" : "0"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                else:
+                    return Response({"message" : "Sorry something went wrong", "status" : "0"}, status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                return Response({"message" : "Sorry something went wrong", "status" : "0"}, status=status.HTTP_401_UNAUTHORIZED)
+    except Exception:
+        print(traceback.format_exc())
+        return Response({"message" : "Sorry something went wrong", "status" : "0"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
