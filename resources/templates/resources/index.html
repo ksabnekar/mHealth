@@ -31,7 +31,7 @@
         locations.push([ "Your location", latitude, longitude, 0]);
         for(var i = 0; i < listLocations.length; i++) {
             if(listLocations[i].latitude > 0) {
-                locations.push([listLocations[i].location + "(" + listLocations[i].resource_name + ")", listLocations[i].latitude, listLocations[i].longitude, listLocations[i].distance]);
+                locations.push([listLocations[i].resource_name + ". " + listLocations[i].resource_description + " " + listLocations[i].location, listLocations[i].latitude, listLocations[i].longitude, listLocations[i].distance]);
             }
         }
         
@@ -49,7 +49,8 @@
     for (i = 0; i < locations.length; i++) {  
       marker = new google.maps.Marker({
         position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-        map: map
+          icon: "{% static 'index5.png' %}",
+        map: map,
       });
 
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
