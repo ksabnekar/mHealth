@@ -31,7 +31,8 @@
         locations.push([ "Your location", latitude, longitude, 0]);
         for(var i = 0; i < listLocations.length; i++) {
             if(listLocations[i].latitude > 0) {
-                locations.push([listLocations[i].resource_name + ". " + listLocations[i].resource_description + " " + listLocations[i].location, listLocations[i].latitude, listLocations[i].longitude, listLocations[i].distance]);
+                locations.push([listLocations[i].resource_name + ".<br>" + listLocations[i].resource_description + "<br>"
+                + listLocations[i].location, listLocations[i].latitude, listLocations[i].longitude, listLocations[i].distance]);
             }
         }
         
@@ -44,6 +45,7 @@
 
     var infowindow = new google.maps.InfoWindow();
 
+    /* CODE FOR CHANGING MARKER */
     var marker, i;
 
     for (i = 0; i < locations.length; i++) {  
