@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Resource Guides</title>
+    <title>Community Health Resources</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -38,6 +38,10 @@
             margin-bottom: 0;
             border-radius: 0;
             background-color: #0a0a0a;
+            top: 0;
+            position: fixed;
+            width: 100%;
+            z-index: 999;
         }
 
         /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
@@ -51,6 +55,10 @@
             background-color: #FFFFFF;
             height: 100%;
         }
+
+        .content {;
+            margin-top: 75px;
+            }
 
         /* Set black background color, white text and some padding */
         footer {
@@ -97,16 +105,16 @@
             text-align: center;
         }
 
-        .banner_sec .heading-main h1:after {
-            /*this is the underline part of the heading*/
+        /*.banner_sec .heading-main h1:after {
+            this is the underline part of the heading
             content: " ";
             position: absolute;
             bottom: -20px;
             height: 10px;
-            width: 120%;
+            width: 110%;
             background-color: #D71920FF;
             left: -10%;
-        }
+        }*/
 
         .help_sec .col-md-8,
         .help_sec .col-md-10 {
@@ -168,7 +176,7 @@
         }
 
         .welcome_box {
-            background-color: #bcbbba;
+            background-color: #f2f2f2;
             padding: 40px 50px;
             border-radius: 20px;
             border: 1px solid #fff;
@@ -344,18 +352,18 @@
         -webkit-filter: hue-rotate(180deg);
       }
         /* Dropdown Button */
-.dropbtn {
-  background-color: #0a0a0a;
-  color: white;
-  padding: 24px;
-  border: none;
-}
+        .dropbtn {
+          background-color: #0a0a0a;
+          color: white;
+          padding: 24px;
+          border: none;
+        }
 
 /* The container <div> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
+        .dropdown {
+          position: relative;
+          display: inline-block;
+        }
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
@@ -394,6 +402,13 @@
             .banner_sec img {
                 height: 200px;
                 object-fit: fill;
+            }
+
+            .dropbtn {
+                background-color: #0a0a0a;
+                color: white;
+                padding: 15px;
+                border: none;
             }
 
             .sidenav {
@@ -439,6 +454,9 @@
                 font-size: 30px;
                 line-height: 45px;
                 margin-bottom: 20px;
+            }
+            .dropdown:hover .dropdown-content {
+              display: none;
             }
         }
 
@@ -507,23 +525,23 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="/">
-                    <img src="{% static 'index2.jpg' %}" alt="" /> Resource Guides
+                    <img src="{% static 'index2.jpg' %}" alt="" /> Community Health Resources
                 </a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li><a href="{% url 'home' %}">Home</a></li>
-                    <li><a href="{% url 'about_us' %}">About</a></li>
+                    <li><div class="dropdown">
+                        <a href="{% url 'home' %}"><button class="dropbtn">Home</button></a></div></li>
+                    <li><div class="dropdown">
+                        <a href="{% url 'about_us' %}"><button class="dropbtn">About</button></a></div></li>
                     <li><div class="dropdown">
                         <a href="{% url 'category_list' %}"><button class="dropbtn">Resources</button></a>
-                    <div class="dropdown-content">
-                    {% for category in categories %}
-                        <a href="{% url 'resource_list' pk=category.category_id %}">{{ category.category_name }}</a>
-                        {% endfor %}
-                    </div>
-                    </div>
-                    </li>
-                    <li><a href="{% url 'feedback' %}">Health Resources Survey</a></li>
+                        <div class="dropdown-content">
+                        {% for category in categories %}
+                            <a href="{% url 'resource_list' pk=category.category_id %}">{{ category.category_name }}</a>
+                            {% endfor %}</div></div></li>
+                    <li><div class="dropdown">
+                        <a href="{% url 'feedback' %}"><button class="dropbtn">Health Resources Survey</button></a></div></li>
                 </ul>
             </div>
         </div>
