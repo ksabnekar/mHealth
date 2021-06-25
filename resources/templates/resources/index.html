@@ -9,12 +9,17 @@
             #mapid { height: 450px; }
         </style>
 
-    <h1>Nearby Resources</h1>
+    <div class="banner_sec">
+    <div class="heading-main">
+        <h1>Nearby Resource Locations</h1>
+    </div>
+</div>
+    <h2>The following resources are located near you:</h2>
     {% if resources %}
     <ul>
     {% for resource in resources %}
         <li>
-        {{ resource.resource_name }}: {{resource.distance}}
+        {{ resource.resource_name }}: {{resource.distance}} miles away.
         </li>
     {% endfor %}
     </ul>
