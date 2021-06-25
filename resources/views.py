@@ -20,11 +20,13 @@ def resource_list_by_location(request, category_id, lat, lon):
     cursor.execute("select * from (SELECT  *,( 3959 * acos( cos( radians("+lat+") ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians("+lon+") ) + sin( radians("+lat+") ) * sin( radians( latitude ) ) ) ) AS distance FROM resources_resources) al where distance < 100 and category_id = "+category_id+" ORDER BY distance limit 5");
     listTemp = dictfetchall(cursor)
     cursor.close()
+    category = Category.objects.filter(status = 1)
     return render(request, 'resources/index.html',
-                 {'resources': listTemp, "resources2": json.dumps(listTemp), "latitude" : lat, "longitude" : lon})
+                 {'categories': category, 'resources': listTemp, "resources2": json.dumps(listTemp), "latitude" : lat, "longitude" : lon})
 
 def home(request):
-    return render(request, 'resources/home.html')
+    category = Category.objects.filter(status = 1)
+    return render(request, 'resources/home.html', {'categories': category})
 
 def category_list(request):
     category = Category.objects.filter(status = 1)
@@ -34,12 +36,15 @@ def category_list(request):
 def resource_list(request,pk):
     resource = Resources.objects.filter(category_id=pk, status = 1)
     category = Category.objects.get(category_id = pk)
+    categories = Category.objects.filter(status = 1)
     return render(request, 'resources/resource_list.html',
-                 {'resources': resource, 'category_id': pk, 'category_name': category.category_name})
+                 {'categories': categories, 'resources': resource, 'category_id': pk, 'category_name': category.category_name})
 
 def feedback(request):
-    return render(request, 'resources/feedback.html')
+    category = Category.objects.filter(status = 1)
+    return render(request, 'resources/feedback.html', {'categories': category})
 
 def about_us(request):
+    category = Category.objects.filter(status = 1)
     return render(request, 'resources/about_us.html',
-                 {})
+                 {'categories': category})
